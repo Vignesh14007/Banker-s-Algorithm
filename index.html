@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banker's Algorithm Simulator</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Header Section -->
+        <header class="header">
+            <div class="header-content">
+                <h1>🏦 Banker's Algorithm Simulator</h1>
+                <p>Deadlock Avoidance in Operating Systems</p>
+            </div>
+            <button class="theme-toggle" id="themeToggle" title="Toggle Dark/Light Mode">
+                🌙
+            </button>
+        </header>
+
+        <!-- Configuration Section -->
+        <section class="card config-section">
+            <h2>Configuration</h2>
+            <div class="input-grid">
+                <div class="input-group">
+                    <label for="numProcesses">Number of Processes:</label>
+                    <input type="number" id="numProcesses" min="1" max="10" value="5" placeholder="Enter number of processes">
+                </div>
+                <div class="input-group">
+                    <label for="numResources">Number of Resources:</label>
+                    <input type="number" id="numResources" min="1" max="5" value="3" placeholder="Enter number of resources">
+                </div>
+            </div>
+            <div class="button-group">
+                <button class="btn btn-primary" id="generateTablesBtn" onclick="generateTables()">Generate Tables</button>
+                <button class="btn btn-secondary" id="presetBtn" onclick="loadPreset()">Load Preset</button>
+                <button class="btn btn-danger" id="resetBtn" onclick="resetSimulation()">Reset</button>
+            </div>
+        </section>
+
+        <!-- Main Content Grid -->
+        <div class="content-grid">
+            <!-- Left Column: Tables -->
+            <div class="tables-section">
+                <!-- Allocation Matrix -->
+                <section class="card">
+                    <h3>Allocation Matrix</h3>
+                    <div id="allocationTableContainer" class="table-container">
+                        <p class="placeholder-text">Generate tables to start</p>
+                    </div>
+                </section>
+
+                <!-- Maximum Matrix -->
+                <section class="card">
+                    <h3>Maximum Matrix</h3>
+                    <div id="maximumTableContainer" class="table-container">
+                        <p class="placeholder-text">Generate tables to start</p>
+                    </div>
+                </section>
+
+                <!-- Available Resources -->
+                <section class="card">
+                    <h3>Available Resources</h3>
+                    <div id="availableTableContainer" class="table-container">
+                        <p class="placeholder-text">Generate tables to start</p>
+                    </div>
+                </section>
+
+                <!-- Need Matrix -->
+                <section class="card">
+                    <h3>Need Matrix (Auto-calculated)</h3>
+                    <div id="needTableContainer" class="table-container">
+                        <p class="placeholder-text">Generate tables to start</p>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Right Column: Controls and Results -->
+            <div class="controls-section">
+                <!-- Algorithm Controls -->
+                <section class="card">
+                    <h2>Banker's Algorithm</h2>
+                    <div class="button-group">
+                        <button class="btn btn-success" id="calculateNeedBtn" onclick="calculateNeedMatrix()" disabled>Calculate Need Matrix</button>
+                        <button class="btn btn-info" id="runAlgorithmBtn" onclick="runBankersAlgorithm()" disabled>Run Algorithm</button>
+                        <button class="btn btn-warning" id="stepSimBtn" onclick="stepSimulation()" disabled>Step Simulation</button>
+                    </div>
+                </section>
+
+                <!-- Result Output -->
+                <section class="card result-section">
+                    <h3>Result</h3>
+                    <div id="resultOutput" class="result-output">
+                        <p class="placeholder-text">Run the algorithm to see results</p>
+                    </div>
+                </section>
+
+                <!-- Step-by-Step Simulation -->
+                <section class="card">
+                    <h3>Step-by-Step Simulation</h3>
+                    <div id="simulationSteps" class="steps-container">
+                        <p class="placeholder-text">Simulation steps will appear here</p>
+                    </div>
+                </section>
+
+                <!-- Safe Sequence Output -->
+                <section class="card safe-sequence-section">
+                    <h3>Safe Sequence</h3>
+                    <div id="safeSequenceOutput" class="safe-sequence-output">
+                        <p class="placeholder-text">Safe sequence will appear here</p>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <!-- Chart Section -->
+        <section class="card chart-section">
+            <h2>Resource Visualization</h2>
+            <div class="chart-container">
+                <div class="chart-wrapper">
+                    <h4>Resource Allocation</h4>
+                    <canvas id="allocationChart"></canvas>
+                </div>
+                <div class="chart-wrapper">
+                    <h4>Resource Distribution</h4>
+                    <canvas id="distributionChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Information Section -->
+        <section class="card info-section">
+            <h3>ℹ️ How to Use</h3>
+            <ul class="info-list">
+                <li><strong>Step 1:</strong> Enter the number of processes and resources</li>
+                <li><strong>Step 2:</strong> Click "Generate Tables" to create editable matrices</li>
+                <li><strong>Step 3:</strong> Fill in the Allocation, Maximum, and Available values</li>
+                <li><strong>Step 4:</strong> Click "Calculate Need Matrix" to auto-compute the Need matrix</li>
+                <li><strong>Step 5:</strong> Click "Run Algorithm" to execute the Banker's Algorithm</li>
+                <li><strong>Step 6:</strong> Use "Step Simulation" to see the algorithm step-by-step</li>
+                <li><strong>Green:</strong> Safe state | <strong>Red:</strong> Unsafe state | <strong>Blue:</strong> Current process</li>
+            </ul>
+        </section>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
