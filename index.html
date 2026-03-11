@@ -8,7 +8,56 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <div class="container">
+    <!-- Welcome Page -->
+    <div id="welcomePage" class="welcome-page">
+        <div class="welcome-container">
+            <div class="welcome-content">
+                <div class="welcome-text">
+                    <h1 class="welcome-title">Banker's Algorithm Simulator</h1>
+                    <p class="welcome-subtitle">Operating System Deadlock Avoidance Visualization Tool</p>
+                    <p class="welcome-description">
+                        This interactive simulator helps you understand how the Banker's Algorithm works to avoid deadlocks in operating systems. Explore resource allocation, safe sequences, and step-by-step algorithm execution.
+                    </p>
+                    <div class="welcome-buttons">
+                        <button class="btn btn-start" id="startSimBtn">Start Simulation</button>
+                        <button class="btn btn-learn">Learn About Algorithm</button>
+                    </div>
+                </div>
+                <div class="welcome-illustration">
+                    <div class="algorithm-graphic">
+                        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Processes -->
+                            <circle cx="50" cy="50" r="25" fill="#6366f1" opacity="0.8"/>
+                            <text x="50" y="55" text-anchor="middle" fill="white" font-weight="bold">P1</text>
+                            
+                            <circle cx="150" cy="50" r="25" fill="#8b5cf6" opacity="0.8"/>
+                            <text x="150" y="55" text-anchor="middle" fill="white" font-weight="bold">P2</text>
+                            
+                            <circle cx="50" cy="150" r="25" fill="#10b981" opacity="0.8"/>
+                            <text x="50" y="155" text-anchor="middle" fill="white" font-weight="bold">P3</text>
+                            
+                            <circle cx="150" cy="150" r="25" fill="#3b82f6" opacity="0.8"/>
+                            <text x="150" y="155" text-anchor="middle" fill="white" font-weight="bold">P4</text>
+                            
+                            <!-- Resources in center -->
+                            <rect x="75" y="75" width="50" height="50" fill="#f59e0b" opacity="0.6" rx="5"/>
+                            <text x="100" y="105" text-anchor="middle" fill="white" font-weight="bold" font-size="14">Resources</text>
+                            
+                            <!-- Connecting lines -->
+                            <line x1="65" y1="65" x2="85" y2="85" stroke="#6366f1" stroke-width="2" opacity="0.6"/>
+                            <line x1="135" y1="65" x2="115" y2="85" stroke="#8b5cf6" stroke-width="2" opacity="0.6"/>
+                            <line x1="65" y1="135" x2="85" y2="115" stroke="#10b981" stroke-width="2" opacity="0.6"/>
+                            <line x1="135" y1="135" x2="115" y2="115" stroke="#3b82f6" stroke-width="2" opacity="0.6"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Simulator -->
+    <div id="simulatorPage" class="simulator-page hidden">
+        <div class="container">
         <!-- Header Section -->
         <header class="header">
             <div class="header-content">
@@ -143,6 +192,7 @@
                 <li><strong>Green:</strong> Safe state | <strong>Red:</strong> Unsafe state | <strong>Blue:</strong> Current process</li>
             </ul>
         </section>
+    </div>
     </div>
 
     <script src="script.js"></script>

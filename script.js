@@ -20,6 +20,7 @@ let state = {
 document.addEventListener('DOMContentLoaded', () => {
     initializeTheme();
     setupEventListeners();
+    setupWelcomePage();
 });
 
 // ============================================================================
@@ -35,6 +36,48 @@ function initializeTheme() {
 
 function setupEventListeners() {
     document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+}
+
+// ============================================================================
+// WELCOME PAGE MANAGEMENT
+// ============================================================================
+function setupWelcomePage() {
+    const startSimBtn = document.getElementById('startSimBtn');
+    const learnBtn = document.querySelector('.btn-learn');
+
+    if (startSimBtn) {
+        startSimBtn.addEventListener('click', startSimulation);
+    }
+
+    if (learnBtn) {
+        learnBtn.addEventListener('click', learnAboutAlgorithm);
+    }
+}
+
+function startSimulation() {
+    const welcomePage = document.getElementById('welcomePage');
+    const simulatorPage = document.getElementById('simulatorPage');
+
+    if (welcomePage) {
+        welcomePage.classList.add('hidden');
+    }
+
+    if (simulatorPage) {
+        simulatorPage.classList.remove('hidden');
+    }
+}
+
+function learnAboutAlgorithm() {
+    alert(`Banker's Algorithm - Quick Overview\n\n` +
+        `The Banker's Algorithm is a deadlock avoidance algorithm used in operating systems.\n\n` +
+        `Key Concepts:\n` +
+        `• Allocation Matrix: Resources currently allocated to processes\n` +
+        `• Maximum Matrix: Maximum resources each process may request\n` +
+        `• Available Resources: Resources not yet allocated\n` +
+        `• Need Matrix: Additional resources each process may still need\n\n` +
+        `The algorithm checks if granting a resource will leave the system in a safe state,\n` +
+        `where all processes can eventually finish execution without deadlock.\n\n` +
+        `Safe Sequence: An order of process execution where all processes can complete.`);
 }
 
 function toggleTheme() {

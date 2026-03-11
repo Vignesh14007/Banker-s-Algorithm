@@ -647,7 +647,9 @@ canvas {
 }
 
 /* Print Styles */
+
 @media print {
+
     .button-group,
     .theme-toggle {
         display: none;
@@ -658,3 +660,341 @@ canvas {
         break-inside: avoid;
     }
 }
+
+/* ============================================================================
+   WELCOME PAGE STYLES
+   ============================================================================ */
+
+/* Welcome Page Container */
+.welcome-page {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    overflow: hidden;
+    animation: fadeIn 0.8s ease-in-out forwards;
+}
+
+.welcome-page.hidden {
+    display: none;
+    animation: fadeOut 0.6s ease-in-out forwards;
+}
+
+/* Welcome Container */
+.welcome-container {
+    width: 100%;
+    max-width: 1200px;
+    padding: 40px 20px;
+}
+
+/* Welcome Content Layout */
+.welcome-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+}
+
+.welcome-text {
+    animation: slideInLeft 0.8s ease-out 0.2s backwards;
+}
+
+.welcome-illustration {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: slideInRight 0.8s ease-out 0.4s backwards;
+}
+
+/* Welcome Title */
+.welcome-title {
+    font-size: 3.5em;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 15px;
+    letter-spacing: -1px;
+    line-height: 1.2;
+}
+
+/* Welcome Subtitle */
+.welcome-subtitle {
+    font-size: 1.4em;
+    color: rgba(255, 255, 255, 0.95);
+    margin-bottom: 25px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+/* Welcome Description */
+.welcome-description {
+    font-size: 1.1em;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 40px;
+    line-height: 1.8;
+    max-width: 500px;
+    font-weight: 300;
+}
+
+/* Welcome Buttons */
+.welcome-buttons {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.btn-start,
+.btn-learn {
+    padding: 16px 40px;
+    font-size: 1.1em;
+    font-weight: 600;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.btn-start {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.btn-start:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+}
+
+.btn-start:active {
+    transform: translateY(-1px);
+}
+
+.btn-learn {
+    background: rgba(255, 255, 255, 0.25);
+    color: white;
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.btn-learn:hover {
+    background: rgba(255, 255, 255, 0.35);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: translateY(-3px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+}
+
+.btn-learn:active {
+    transform: translateY(-1px);
+}
+
+/* Illustration */
+.algorithm-graphic {
+    width: 300px;
+    height: 300px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 30px;
+    backdrop-filter: blur(20px);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    animation: float 3s ease-in-out infinite;
+}
+
+.algorithm-graphic svg {
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.1));
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+/* Simulator Page */
+.simulator-page {
+    opacity: 1;
+    transition: opacity 0.6s ease-in-out;
+}
+
+.simulator-page.hidden {
+    display: none;
+}
+
+/* ============================================================================
+   WELCOME PAGE RESPONSIVE DESIGN
+   ============================================================================ */
+
+@media (max-width: 1024px) {
+    .welcome-title {
+        font-size: 2.8em;
+    }
+
+    .welcome-subtitle {
+        font-size: 1.2em;
+    }
+
+    .welcome-description {
+        font-size: 1em;
+    }
+
+    .welcome-content {
+        gap: 40px;
+    }
+
+    .algorithm-graphic {
+        width: 250px;
+        height: 250px;
+    }
+}
+
+@media (max-width: 768px) {
+    .welcome-page {
+        padding: 20px;
+    }
+
+    .welcome-content {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+
+    .welcome-title {
+        font-size: 2.2em;
+    }
+
+    .welcome-subtitle {
+        font-size: 1.1em;
+    }
+
+    .welcome-description {
+        font-size: 1em;
+        margin-bottom: 30px;
+    }
+
+    .welcome-buttons {
+        justify-content: center;
+    }
+
+    .welcome-illustration {
+        order: -1;
+    }
+
+    .algorithm-graphic {
+        width: 220px;
+        height: 220px;
+    }
+
+    .btn-start,
+    .btn-learn {
+        padding: 14px 30px;
+        font-size: 1em;
+    }
+}
+
+@media (max-width: 480px) {
+    .welcome-page {
+        padding: 15px;
+    }
+
+    .welcome-container {
+        padding: 20px 15px;
+    }
+
+    .welcome-title {
+        font-size: 1.8em;
+    }
+
+    .welcome-subtitle {
+        font-size: 1em;
+        margin-bottom: 20px;
+    }
+
+    .welcome-description {
+        font-size: 0.95em;
+        margin-bottom: 25px;
+        max-width: 100%;
+    }
+
+    .welcome-content {
+        gap: 25px;
+    }
+
+    .welcome-buttons {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .btn-start,
+    .btn-learn {
+        width: 100%;
+        padding: 12px 20px;
+        font-size: 0.95em;
+    }
+
+    .algorithm-graphic {
+        width: 180px;
+        height: 180px;
+        padding: 20px;
+    }
+
+    .algorithm-graphic svg {
+        width: 100%;
+        height: 100%;
+    }
+}
+
