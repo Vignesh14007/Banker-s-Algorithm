@@ -685,3 +685,208 @@ function resetSimulation() {
 
     alert('Simulation reset successfully!');
 }
+
+// ============================================================================
+// PDF DOWNLOAD FUNCTIONALITY
+// ============================================================================
+function downloadResultsAsPDF() {
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF({
+        orientation: 'portrait',
+        unit: 'mm',
+        format: 'a4'
+    });
+
+    let yPosition = 15;
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
+    const marginLeft = 15;
+    const contentWidth = pageWidth - 30;
+
+    // Title
+    pdf.setFontSize(20);
+    pdf.setTextColor(99, 102, 241);
+    pdf.setFont(undefined, 'bold');
+    pdf.text("Banker's Algorithm Simulator Results", marginLeft, yPosition);
+    yPosition += 12;
+
+    // Timestamp
+    pdf.setFontSize(10);
+    pdf.setTextColor(107, 114, 128);
+    pdf.setFont(undefined, 'normal');
+    const timestamp = new Date().toLocaleString();
+    pdf.text(`Generated: ${timestamp}`, marginLeft, yPosition);
+    yPosition += 8;
+
+    // Separator
+    pdf.setDrawColor(229, 231, 235);
+    pdf.line(marginLeft, yPosition, pageWidth - marginLeft, yPosition);
+    yPosition += 8;
+
+    // Configuration Section
+    pdf.setFontSize(13);
+    pdf.setTextColor(31, 41, 55);
+    pdf.setFont(undefined, 'bold');
+    pdf.text('Configuration', marginLeft, yPosition);
+    yPosition += 8;
+
+    pdf.setFontSize(10);
+    pdf.setFont(undefined, 'normal');
+    pdf.setTextColor(75, 85, 99);
+    pdf.text(`Number of Processes: ${state.numProcesses}`, marginLeft + 5, yPosition);
+    yPosition += 6;
+    pdf.text(`Number of Resources: ${state.numResources}`, marginLeft + 5, yPosition);
+    yPosition += 10;
+
+    // Matrices Section
+    pdf.setFontSize(13);
+    pdf.setFont(undefined, 'bold');
+    pdf.setTextColor(31, 41, 55);
+    pdf.text('System State Matrices', marginLeft, yPosition);
+    yPosition += 8;
+
+    // Allocation Matrix
+    pdf.setFontSize(11);
+    pdf.setFont(undefined, 'bold');
+    pdf.setTextColor(75, 85, 99);
+    pdf.text('Allocation Matrix:', marginLeft + 5, yPosition);
+    yPosition += 6;
+    yPosition = addMatrixToPDF(pdf, state.allocation, yPosition, marginLeft + 10, 'P', 'R');
+
+    // Maximum Matrix
+    pdf.setFontSize(11);
+    pdf.setFont(undefined, 'bold');
+    pdf.setTextColor(75, 85, 99);
+    pdf.text('Maximum Matrix:', marginLeft + 5, yPosition);
+    yPosition += 6;
+    yPosition = addMatrixToPDF(pdf, state.maximum, yPosition, marginLeft + 10, 'P', 'R');
+
+    // Available Resources
+    pdf.setFontSize(11);
+    pdf.setFont(undefined, 'bold');
+    pdf.setTextColor(75, 85, 99);
+    pdf.text('Available Resources:', marginLeft + 5, yPosition);
+    yPosition += 6;
+    const availableRow = [['Resource', ...Array(state.numResources).fill(0).map((_, i) => `R${i}`)]];
+    for (let j = 0; j < state.numResources; j++) {
+        availableRow[0].push(state.available[j]);
+    }
+    yPosition = addMatrixToPDF(pdf, [state.available], yPosition, marginLeft + 10, 'Avail.', 'R');
+
+    // Need Matrix
+    pdf.setFontSize(11);
+    pdf.setFont(undefined, 'bold');
+    pdf.setTextColor(75, 85, 99);
+    pdf.text('Need Matrix:', marginLeft + 5, yPosition);
+    yPosition += 6;
+    yPosition = addMatrixToPDF(pdf, state.need, yPosition, marginLeft + 10, 'P', 'R');
+
+    // Check if new page needed
+    if (yPosition > pageHeight - 50) {
+        pdf.addPage();
+        yPosition = 15;
+    }
+
+    // Results Section
+    pdf.setFontSize(13);
+    pdf.setFont(undefined, 'bold');
+    pdf.setTextColor(31, 41, 55);
+    pdf.text('Algorithm Results', marginLeft, yPosition);
+    yPosition += 8;
+
+    // System State
+    pdf.setFontSize(11);
+    pdf.setFont(undefined, 'bold');
+    pdf.setTextColor(75, 85, 99);
+    const systemState = state.isSafe ? 'SAFE' : 'UNSAFE';
+    const stateColor = state.isSafe ? [16, 185, 129] : [239, 68, 68];
+    pdf.setTextColor(...stateColor);
+    pdf.text(`System State: ${systemState}`, marginLeft + 5, yPosition);
+    yPosition += 8;
+
+    // Safe Sequence
+    if (state.safeSequence.length > 0) {
+        pdf.setFont(undefined, 'bold');
+        pdf.setTextColor(75, 85, 99);
+        pdf.text('Safe Sequence:', marginLeft + 5, yPosition);
+        yPosition += 6;
+
+        pdf.setFont(undefined, 'normal');
+        const safeSeqText = state.safeSequence.join(' → ');
+        const wrapped = pdf.splitTextToSize(safeSeqText, contentWidth - 10);
+        wrapped.forEach(line => {
+            if (yPosition > pageHeight - 20) {
+                pdf.addPage();
+                yPosition = 15;
+            }
+            pdf.text(line, marginLeft + 10, yPosition);
+            yPosition += 6;
+        });
+        yPosition += 4;
+    }
+
+    // Footer
+    pdf.setFontSize(9);
+    pdf.setTextColor(156, 163, 175);
+    pdf.setFont(undefined, 'normal');
+    pdf.text("Banker's Algorithm Simulator", marginLeft, pageHeight - 10);
+
+    // Download PDF
+    pdf.save('bankers-algorithm-results.pdf');
+}
+
+function addMatrixToPDF(pdf, matrix, startY, xPos, rowLabel, colLabel) {
+    const cellWidth = 12;
+    const cellHeight = 6;
+    let y = startY;
+
+    if (!matrix || matrix.length === 0) {
+        pdf.setFontSize(9);
+        pdf.setTextColor(180, 180, 180);
+        pdf.text('No data available', xPos, y);
+        return y + 8;
+    }
+
+    const numCols = matrix[0].length;
+    const numRows = matrix.length;
+
+    // Header row
+    pdf.setFontSize(8);
+    pdf.setTextColor(99, 102, 241);
+    pdf.setFillColor(243, 244, 246);
+
+    // Row labels header
+    pdf.rect(xPos, y, cellWidth, cellHeight, 'FD');
+    pdf.text(rowLabel, xPos + cellWidth / 2, y + cellHeight - 1, { align: 'center' });
+
+    // Column headers
+    for (let j = 0; j < numCols; j++) {
+        pdf.rect(xPos + cellWidth + j * cellWidth, y, cellWidth, cellHeight, 'FD');
+        pdf.text(`${colLabel}${j}`, xPos + cellWidth + j * cellWidth + cellWidth / 2, y + cellHeight - 1, { align: 'center' });
+    }
+
+    y += cellHeight;
+
+    // Data rows
+    pdf.setTextColor(75, 85, 99);
+    for (let i = 0; i < numRows; i++) {
+        // Row label
+        pdf.setFillColor(243, 244, 246);
+        pdf.rect(xPos, y, cellWidth, cellHeight, 'FD');
+        pdf.text(`P${i}`, xPos + cellWidth / 2, y + cellHeight - 1, { align: 'center' });
+
+        // Data cells
+        for (let j = 0; j < numCols; j++) {
+            pdf.setFillColor(255, 255, 255);
+            pdf.setDrawColor(229, 231, 235);
+            pdf.rect(xPos + cellWidth + j * cellWidth, y, cellWidth, cellHeight, 'FD');
+            const value = matrix[i][j];
+            pdf.text(String(value), xPos + cellWidth + j * cellWidth + cellWidth / 2, y + cellHeight - 1, { align: 'center' });
+        }
+
+        y += cellHeight;
+    }
+
+    return y + 4;
+}
+
